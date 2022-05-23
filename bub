@@ -1,0 +1,172 @@
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
+local lp = game.Players.LocalPlayer
+local X = Material.Load({
+    Title = "Keybrew Hub | Soul War",
+    Style = 3,
+    SizeX = 300,
+    SizeY = 350,
+    Theme = "Light",
+    ColorOverrides = {
+        MainFrame = Color3.fromRGB(0,0,0),
+        Toggle = Color3.fromRGB(124,37,255),
+        ToggleAccent = Color3.fromRGB(255,255,255), 
+        Dropdown = Color3.fromRGB(124,37,255),
+		DropdownAccent = Color3.fromRGB(255,255,255),
+        Slider = Color3.fromRGB(124,37,255),
+		SliderAccent = Color3.fromRGB(255,255,255),
+        NavBarAccent = Color3.fromRGB(0,0,0),
+        Content = Color3.fromRGB(0,0,0),
+    }
+})
+
+local Y = X.New({
+    Title = "Main"
+})
+local Q = X.New({
+    Title = "Quest"
+})
+local Misc = X.New({
+    Title = "Misc"
+})
+
+local Cred = X.New({
+    Title = "Credits"
+})
+    Cred.Button({
+    Text = "Copy Discord UyuSF4fPC9",
+    Callback = function()
+        setclipboard("https://discord.gg/UyuSF4fPC9")
+        toclipboard("https://discord.gg/UyuSF4fPC9")
+    end,
+})
+
+local function getHOLLOWQ()
+    local dist, thing = math.huge
+    for i,v in next, game:GetService("Workspace").Alive:GetDescendants() do
+        if  v:FindFirstChild("Target") then
+            local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude
+            if mag < dist then 
+                dist = mag 
+                thing = v 
+            end
+        end
+    end
+    return thing
+end
+
+local function getHOLLOW()
+    local dist, thing = math.huge
+    for i,v in next, game:GetService("Workspace").Alive:GetChildren() do
+        if  v:FindFirstChild("Data") then
+            local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).magnitude
+            if mag < dist then 
+                dist = mag 
+                thing = v 
+            end
+        end
+    end
+    return thing
+end
+
+
+
+    Y.Toggle({
+    Text = "Auto Parry",
+    Callback = function(a)
+        aa = a
+        while aa do task.wait()
+            local args = {
+                [1] = "Parry"
+            }
+            
+            game:GetService("ReplicatedStorage").Remotes.Combat:FireServer(unpack(args))
+        end
+    end,
+    Enabled = false
+})
+
+Y.Toggle({
+    Text = "infinite no combat tag",
+    Callback = function(b)
+        bb = b
+        while bb do task.wait()
+            local args = {
+                [1] = false
+            }
+            
+            game:GetService("ReplicatedStorage").Remotes.CombatTag:FireServer(unpack(args))
+        end
+    end,
+    Enabled = false
+})
+   
+    Y.Button({
+    Text = "Parry",
+    Callback = function()
+        local args = {
+            [1] = "Parry"
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.Combat:FireServer(unpack(args))
+    end,
+})
+
+
+    Y.Toggle({
+    Text = "Auto Attack",
+    Callback = function(k)
+        kk = k
+        while kk do task.wait()
+                        game:GetService("ReplicatedStorage").Remotes.Combat:FireServer(("M1"))
+
+
+        end
+    end,
+    Enabled = false
+})
+Y.Toggle({
+    Text = "TP to Hollow",
+    Callback = function(d)
+        dd = d
+        while dd do task.wait()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getHOLLOW().HumanoidRootPart.CFrame + Vector3.new(0,5,0)
+
+        end
+    end,
+    Enabled = false
+})
+
+Y.Toggle({
+    Text = "TP to Menos",
+    Callback = function(d)
+        dd = d
+        while dd do task.wait()
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getHOLLOW().RightFoot.CFrame
+            Menu = {
+                Information = function(self)
+                    X.Banner({
+                        Text = "Must be near Menos for it to work"
+                    })
+                end
+            }
+
+        end
+    end,
+    Enabled = false
+})
+
+
+    Q.Button({
+    Text = "Quest Board",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-51, 152, -178)
+    end,
+})
+
+
+    Q.Button({
+    Text = "TP to Quest Hollow",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getHOLLOWQ().CFrame
+    end,
+})
