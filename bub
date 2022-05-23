@@ -141,6 +141,7 @@ Y.Toggle({
     Callback = function(d)
         dd = d
         while dd do task.wait()
+            pcall(function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getHOLLOW().RightFoot.CFrame
             Menu = {
                 Information = function(self)
@@ -149,7 +150,7 @@ Y.Toggle({
                     })
                 end
             }
-
+        end)
         end
     end,
     Enabled = false
@@ -170,3 +171,10 @@ Y.Toggle({
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getHOLLOWQ().CFrame
     end,
 })
+
+
+
+
+      for i,v in pairs(getconnections(game:GetService("Players").LocalPlayer.Idled)) do
+       v:Disable()
+       end
