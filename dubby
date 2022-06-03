@@ -1,0 +1,179 @@
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
+local lp = game.Players.LocalPlayer
+local X = Material.Load({
+    Title = "Keybrew Hub | Demon Soul",
+    Style = 3,
+    SizeX = 300,
+    SizeY = 350,
+    Theme = "Light",
+    ColorOverrides = {
+        MainFrame = Color3.fromRGB(0,0,0),
+        Toggle = Color3.fromRGB(124,37,255),
+        ToggleAccent = Color3.fromRGB(255,255,255), 
+        Dropdown = Color3.fromRGB(124,37,255),
+		DropdownAccent = Color3.fromRGB(255,255,255),
+        Slider = Color3.fromRGB(124,37,255),
+		SliderAccent = Color3.fromRGB(255,255,255),
+        NavBarAccent = Color3.fromRGB(0,0,0),
+        Content = Color3.fromRGB(0,0,0),
+    }
+})
+
+local Main = X.New({
+    Title = "Main"
+})
+
+
+local Misc = X.New({
+    Title = "Misc"
+})
+
+local Cred = X.New({
+    Title = "Credits"
+})
+    Cred.Button({
+    Text = "Copy Discord UyuSF4fPC9",
+    Callback = function()
+        setclipboard("https://discord.gg/UyuSF4fPC9")
+        toclipboard("https://discord.gg/UyuSF4fPC9")
+    end,
+})
+
+local function getCHEST()
+    local dist, thing = math.huge
+    for i,v in next, game:GetService("Workspace").ChestPoints:GetDescendants() do
+        if  v.Name == "Touch" and v:IsA("Part") then
+            local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude
+            if mag < dist then 
+                dist = mag 
+                thing = v 
+            end
+        end
+    end
+    return thing
+end
+
+
+   local NPC = {}
+
+   for i,v in pairs(game:GetService("Workspace").GhostPos:GetChildren()) do
+       if v:IsA"Folder" then
+           table.insert(NPC,tostring(v))
+       end
+   end
+   Main.Toggle({
+    Text = "Auto Punch",
+    Callback = function(a)
+        a1 = a
+        while a1 do task.wait()
+
+            game:GetService("ReplicatedStorage").RemoteEvents.GeneralAttack:FireServer()
+            wait(1)
+
+        end
+    end,
+    Enabled = false
+})
+
+Main.Toggle({
+    Text = "Auto Skill",
+    Callback = function(a)
+        a2 = a
+        while a2 do task.wait()
+
+            game:GetService("ReplicatedStorage").RemoteEvents.SkillAttack:FireServer((1))
+            game:GetService("ReplicatedStorage").RemoteEvents.SkillAttack:FireServer((2))
+            game:GetService("ReplicatedStorage").RemoteEvents.SkillAttack:FireServer((3))
+            game:GetService("ReplicatedStorage").RemoteEvents.SkillAttack:FireServer((4))
+            game:GetService("ReplicatedStorage").RemoteEvents.SkillAttack:FireServer((5))
+            wait(.5)
+
+        end
+    end,
+    Enabled = false
+})
+
+    Main.Dropdown({
+    Text = "NPCs",
+    Callback = function(Value)
+        getgenv().npc = Value
+    end,
+    Options = NPC
+})
+
+local function getNPC()
+    local dist, thing = math.huge
+    for i,v in next, game:GetService("Workspace").GhostPos[npc]:GetDescendants() do
+        if  v.Name == "HumanoidRootPart" and v:IsA("Part") then
+            local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude
+            if mag < dist then 
+                dist = mag 
+                thing = v 
+            end
+        end
+    end
+    return thing
+end
+
+    Main.Toggle({
+    Text = "AutoFarm NPC",
+    Callback = function(a)
+        aa = a
+        while aa do task.wait()
+            pcall(function()
+                lp.Character.HumanoidRootPart.CFrame = getNPC().CFrame
+            end)
+        end
+    end,
+    Enabled = false
+})
+
+    Main.Toggle({
+    Text = "AutoFarm Chest",
+    Callback = function(a)
+        a2 = a
+        while a2 do task.wait()
+            pcall(function()
+                lp.Character.HumanoidRootPart.CFrame = getCHEST().CFrame
+            end)
+        end
+    end,
+    Enabled = false
+})
+
+Main.Toggle({
+    Text = "AutoFarm Boss",
+    Callback = function(a)
+        a3 = a
+        while a3 do task.wait()
+            for i,v in next, game:GetService("Workspace").Maps:GetChildren() do
+                if  v.Parent.Name == "Maps" and v:FindFirstChild("IsBoss") then
+            pcall(function()
+                lp.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart.CFrame + Vector3.new(0,-2,-3)
+                    end)
+                end
+            end
+        end
+    end,
+    Enabled = false
+})
+
+    Misc.Slider({
+    Text = "WalkSpeed",
+    Callback = function(warthog)
+        getgenv().speed = warthog
+    end,
+    Min = 1,
+    Max = 500,
+    Def = 50
+})
+    Misc.Toggle({
+    Text = "Toggle",
+    Callback = function(g)
+        gg = g
+        while gg do task.wait()
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+        end
+    end,
+    Enabled = false
+})
