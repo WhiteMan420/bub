@@ -1,0 +1,270 @@
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
+
+local X = Material.Load({
+    Title = "Keybrew Hub | Anime Impact",
+    Style = 3,
+    SizeX = 300,
+    SizeY = 350,
+    Theme = "Light",
+    ColorOverrides = {
+        MainFrame = Color3.fromRGB(0,0,0),
+        Toggle = Color3.fromRGB(124,37,255),
+        ToggleAccent = Color3.fromRGB(255,255,255), 
+        Dropdown = Color3.fromRGB(124,37,255),
+		DropdownAccent = Color3.fromRGB(255,255,255),
+        Slider = Color3.fromRGB(124,37,255),
+		SliderAccent = Color3.fromRGB(255,255,255),
+        NavBarAccent = Color3.fromRGB(0,0,0),
+        Content = Color3.fromRGB(0,0,0),
+    }
+})
+
+local Main = X.New({
+    Title = "Main"
+})
+
+local TP = X.New({
+    Title = "Teleport"
+})
+
+local Misc = X.New({
+    Title = "Misc"
+})
+
+local Cred = X.New({
+    Title = "Credits"
+})
+    Cred.Button({
+    Text = "Copy Discord UyuSF4fPC9",
+    Callback = function()
+        setclipboard("https://discord.gg/UyuSF4fPC9")
+        toclipboard("https://discord.gg/UyuSF4fPC9")
+    end,
+})
+
+
+local function getTRAIN()
+    local dist, thing = math.huge
+    for i,v in next, game:GetService("Workspace")["_SYSTEM"]["_INTERACT"]:GetChildren() do
+        if  v.Name == "Train"  then
+            local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude
+            if mag < dist then 
+                dist = mag 
+                thing = v 
+            end
+        end
+    end
+    return thing
+end
+   local Maps = {}
+
+   for i,v in pairs(game:GetService("Workspace")["_SYSTEM"]["_AREAs"]:GetChildren()) do
+       if v:IsA"Part" and v.Parent.Name == "_AREAs" then
+           table.insert(Maps,tostring(v))
+       end
+   end
+
+   local Eggs = {}
+
+   for i,v in pairs(game:GetService("Workspace")["_SYSTEM"]["_EGG"]:GetChildren()) do
+       if v:IsA"Model" and v.Parent.Name == "_EGG" then
+           table.insert(Eggs,tostring(v))
+       end
+   end
+   Main.Toggle({
+    Text = "Autoclick",
+    Callback = function(a)
+        aa = a
+    while aa do task.wait() 
+        game:GetService("ReplicatedStorage").Remotes.TappingEvent:FireServer()
+    end
+    end,
+    Enabled = false
+})
+
+    Main.TextField({
+    Text = "Offer Number Here",
+    Callback = function(exechange)
+        getgenv().offernum = exechange
+    end,
+})
+
+    Main.Toggle({
+    Text = "Auto Exchange",
+    Callback = function(b)
+        bb = b
+        while bb do task.wait() 
+            local args = {
+                [1] = "Exchange",
+                [2] = tonumber(offernum)
+            }
+            
+            game:GetService("ReplicatedStorage").Remotes.ClientRemote:InvokeServer(unpack(args))   
+            wait(1) 
+        end
+    end,
+    Enabled = false
+})
+
+
+Main.Toggle({
+    Text = "Auto Train",
+    Callback = function(b)
+        b1 = b
+        while b1 do task.wait() 
+            local args = {
+                [1] = "Train",
+                [2] = getTRAIN()
+            }
+
+            game:GetService("ReplicatedStorage").Remotes.ClientRemote:InvokeServer(unpack(args))
+
+        end
+    end,
+    Enabled = false,
+    Menu = {
+        Information = function(self)
+            X.Banner({
+                Text = "Have to be close to a Trainer to work."
+            })
+        end
+    }
+})
+
+
+
+
+    Main.Dropdown({
+    Text = "Select Upgrade",
+    Callback = function(upg1)
+        getgenv().upgd = upg1
+    end,
+    Options = {
+        "More Equip",
+        "More Storage",
+        "Energy Multiplier",
+        "Mana Multiplier",
+        "Walk Speed"
+    },
+})
+
+    Main.Button({
+    Text = "Buy",
+    Callback = function()
+        local args = {
+            [1] = "BuyUpgrade",
+            [2] = upgd
+        }
+        
+        game:GetService("ReplicatedStorage").Remotes.ClientRemote:InvokeServer(unpack(args))    
+    end,
+})
+
+    TP.Dropdown({
+    Text = "Maps",
+    Callback = function(teleport1)
+        getgenv().teleport = teleport1
+    end,
+    Options = 
+        Maps
+
+})
+
+    TP.Button({
+    Text = "Teleport",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["_SYSTEM"]["_AREAs"][teleport].CFrame
+    end,
+})
+ 
+TP.Dropdown({
+    Text = "Eggs",
+    Callback = function(teleport3)
+        getgenv().teleport3 = teleport3
+    end,
+    Options = Eggs
+})
+TP.Button({
+    Text = "Teleport",
+    Callback = function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["_SYSTEM"]["_EGG"][teleport3].EGG.Electricity.CFrame
+    end,
+})
+  
+    TP.Dropdown({
+    Text = "Trainers",
+    Callback = function(teleport2)
+        getgenv().tteleport = teleport2
+    end,
+    Options = {
+        "Base",
+        "5x Train",
+        "25x Train",
+        "125x Train",
+    },
+})
+    TP.Button({
+    Text = "Teleport",
+    Callback = function()
+        if tteleport == "Base" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(269.050476, 14.0100002, 2206.06665, 0.258864343, 0, 0.965913713, 0, 1, 0, -0.965913713, 0, 0.258864343)
+            elseif tteleport == "5x Train" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-94.3577576, 12.6309967, 13152.7217, -0.0871315002, 0, 0.996196866, 0, 1, 0, -0.996196866, 0, -0.0871315002)
+            elseif tteleport == "25x Train" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(133.238098, 9.33099651, 16109.8379, -0.0871315002, 0, 0.996196866, 0, 1, 0, -0.996196866, 0, -0.0871315002)
+            elseif tteleport == "125x Train" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(503, 9, 20762)
+            end    
+        end,
+})
+
+TP.Dropdown({
+    Text = "Mana",
+    Callback = function(teleport2)
+        getgenv().tteleport1 = teleport2
+    end,
+    Options = {
+        "2x Mana",
+        "5x Mana"
+    },
+})
+    TP.Button({
+    Text = "Teleport",
+    Callback = function()
+            if tteleport1 == "2x Mana" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(288, 21, 14507)
+            elseif tteleport1 == "5x Mana" then
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(293, 14, 18506)
+            end    
+        end,
+})
+
+    Misc.Slider({
+    Text = "WalkSpeed",
+    Callback = function(warthog)
+        getgenv().speed = warthog
+    end,
+    Min = 1,
+    Max = 500,
+    Def = 50
+})
+    Misc.Toggle({
+    Text = "Toggle",
+    Callback = function(g)
+        gg = g
+        while gg do task.wait()
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+        end
+    end,
+    Enabled = false
+})
+    Misc.Button({
+    Text = "Reset Char",
+    Callback = function()
+        game.Players.LocalPlayer.Character.Humanoid:Destroy()
+    end,
+})
+
+
+
+       
