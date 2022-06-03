@@ -1,0 +1,376 @@
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
+local lp = game.Players.LocalPlayer
+local X = Material.Load({
+    Title = "Keybrew Hub | PSX",
+    Style = 3,
+    SizeX = 300,
+    SizeY = 350,
+    Theme = "Light",
+    ColorOverrides = {
+        MainFrame = Color3.fromRGB(0,0,0),
+        Toggle = Color3.fromRGB(124,37,255),
+        ToggleAccent = Color3.fromRGB(255,255,255), 
+        Dropdown = Color3.fromRGB(124,37,255),
+		DropdownAccent = Color3.fromRGB(255,255,255),
+        Slider = Color3.fromRGB(124,37,255),
+		SliderAccent = Color3.fromRGB(255,255,255),
+        NavBarAccent = Color3.fromRGB(0,0,0),
+        Content = Color3.fromRGB(0,0,0),
+    }
+})
+
+local Map = {}
+
+for i,v in pairs(game:GetService("Workspace")["__MAP"].Teleports:GetChildren()) do
+        table.insert(Map,tostring(v))
+    end
+    
+local Egg = {}
+
+for i,v in pairs(game:GetService("Workspace")["__MAP"].Eggs:GetChildren()) do
+        table.insert(Egg,tostring(v))
+    end
+
+local function getCOIN()
+    local dist, thing = math.huge
+    for i,v in next, game:GetService("Workspace")["__THINGS"].Coins:GetChildren() do
+        if  v.Parent.Name == "Coins" then
+            local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.POS.Position).magnitude
+            if mag < dist then 
+                dist = mag 
+                thing = v 
+            end
+        end
+    end
+    return thing
+end
+
+local Main = X.New({
+    Title = "Main"
+})
+local Tp = X.New({
+    Title = "Teleports"
+})
+local Misc = X.New({
+    Title = "Misc"
+})
+
+local Cred = X.New({
+    Title = "Credits"
+})
+    Cred.Button({
+    Text = "Copy Discord UyuSF4fPC9",
+    Callback = function()
+        setclipboard("https://discord.gg/UyuSF4fPC9")
+        toclipboard("https://discord.gg/UyuSF4fPC9")
+    end,
+})
+
+
+    Main.Toggle({
+    Text = "Auto Attack",
+    Callback = function(a)
+        aa = a
+        while aa do task.wait()
+                    for i,v in next, lp.PlayerGui.Inventory.Frame.Main.Pets:GetChildren() do
+                        if  v:IsA("TextButton") then
+
+                    local args = {
+                        [1] = {
+                            [1] = getCOIN().Name,
+                            [2] = {
+                                    v.Name
+                            }
+                        }
+                    }
+
+                    workspace.__THINGS.__REMOTES:FindFirstChild("join coin"):InvokeServer(unpack(args))
+
+                    local args = {
+                        [1] = {
+                            [1] = getCOIN().Name,
+                            [2] = v.Name
+                        }
+                    }
+
+                    workspace.__THINGS.__REMOTES:FindFirstChild("farm coin"):FireServer(unpack(args))
+                end
+            end
+        end
+    end,
+    Enabled = false
+})
+
+    Main.Toggle({
+    Text = "Collect Coins",
+    Callback = function(b)
+        bb = b
+        while bb do task.wait()
+                        for i,v in next, game:GetService("Workspace")["__THINGS"].Orbs:GetChildren() do
+                            if  v.Parent.Name == "Orbs" then
+                    local args = {
+                        [1] = {
+                            [1] = {
+                                [1] = v.Name
+                            }
+                        }
+                    }
+                    
+                    workspace.__THINGS.__REMOTES:FindFirstChild("claim orbs"):FireServer(unpack(args))
+                end
+            end
+        end
+    end,
+    Enabled = false
+})
+
+Main.Toggle({
+    Text = "Disable Egg Animations",
+    Callback = function(Chuck)
+        getgenv().Egg = Chuck
+        for Index, Value in pairs(getgc(true)) do
+            if (typeof(Value) == "table" and rawget(Value, "OpenEgg")) and getgenv().Egg then
+                Value.OpenEgg = function()
+                    return
+                end
+            end
+            end
+    end,
+    Enabled = false
+})
+    Main.TextField({
+    Text = "Enter Egg Name Here",
+    Callback = function(Value)
+        getgenv().egg = Value
+    end,
+})
+
+    Main.Toggle({
+    Text = "Auto Open 1",
+    Callback = function(c)
+        cc = c
+        while cc do task.wait()
+    local args = {
+    [1] = {
+        [1] = egg,
+        [2] = false
+    }
+}
+
+workspace.__THINGS.__REMOTES:FindFirstChild("buy egg"):InvokeServer(unpack(args))
+
+        end
+    end,
+    Enabled = false
+})
+
+Main.Toggle({
+    Text = "Auto Open 3 (Need Gamepass)",
+    Callback = function(c)
+        cc = c
+        while cc do task.wait()
+    local args = {
+    [1] = {
+        [1] = egg,
+        [2] = true
+    }
+}
+
+workspace.__THINGS.__REMOTES:FindFirstChild("buy egg"):InvokeServer(unpack(args))
+
+        end
+    end,
+    Enabled = false
+})
+
+
+local drop = Tp.Dropdown({
+    Text = "Areas",
+    Callback = function(Value)
+        getgenv().tee = Value 
+    end,
+    Options = Map
+})
+
+
+    Tp.Button({
+    Text = "Teleport",
+    Callback = function()
+        lp.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["__MAP"].Teleports[tee].CFrame
+    end,
+})
+
+    Tp.Button({Text = "Refresh Area", Callback = function()
+    table.clear(Map)
+    for i,v in pairs(game:GetService("Workspace")["__MAP"].Teleports:GetChildren()) do
+        table.insert(Map,tostring(v))
+        drop:SetOptions(Map)
+    end
+end})
+
+Misc.Toggle({
+    Text = "Stat Tracker",
+    Callback = function(buck)
+        getgenv().Do = buck
+        local Save = require(game:GetService("ReplicatedStorage").Framework.Library).Save.Get
+        local Commas = require(game:GetService("ReplicatedStorage").Framework.Library).Functions.Commas
+        local Tables = {}
+        
+        for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Main.Right:GetChildren()) do
+            if v.ClassName == 'Frame' and v.Name ~= 'Rank' and not string.find(v.Name, "2") then
+                table.insert(Tables, v.Name)
+            end
+        end
+        
+        function get(v)
+            return Save()[v]
+        end
+        
+        
+        getgenv().MyTables = {}
+        for i,v in pairs(Tables) do
+            if game:GetService("Players").LocalPlayer.PlayerGui.Main.Right:FindFirstChild(v.."2") then
+                game:GetService("Players").LocalPlayer.PlayerGui.Main.Right:FindFirstChild(v.."2"):Destroy()
+            end
+        end
+        for i,v in pairs(Tables) do
+            if not game:GetService("Players").LocalPlayer.PlayerGui.Main.Right:FindFirstChild(v.."2") then
+                local TP = game:GetService("Players").LocalPlayer.PlayerGui.Main.Right:FindFirstChild(v):Clone()
+                TP.Name = tostring(TP.Name .. "2")
+                TP.Parent = game:GetService("Players").LocalPlayer.PlayerGui.Main.Right
+                TP.Size = UDim2.new(0, 175, 0, 30)
+                TP.LayoutOrder = TP.LayoutOrder + 1
+                getgenv().MyTables[v] = TP
+                if not getgenv().Do then
+                TP:remove()
+                end
+            end
+        end        
+        for i,v in pairs(Tables) do
+            spawn(function()
+                local MT = {}
+                local S1 = 1
+                local Times = 0
+                local LastTime = tick()
+                local Rn = LastTime
+                local TICK_TIME = 0.5
+                while getgenv().Do do wait()
+                    if Times >= TICK_TIME then
+                        while Times >= TICK_TIME do Times = Times - TICK_TIME end
+                        local Current = get(v)
+                        MT[S1] = Current
+                        local S2 = Current - (MT[S1-120] or MT[1])
+                        S1 = S1 + 1
+                        getgenv().MyTables[v].Amount.Text = tostring(Commas(S2).." in 60s")
+                        getgenv().MyTables[v]["Amount_odometerGUIFX"].Text = tostring(Commas(S2).." in 60s")
+                    end
+                    task.wait(0.001)
+                    Rn = tick()
+                    Times = Times + (Rn - LastTime)
+                    LastTime = Rn
+                end
+            end)
+        end
+    end,
+    Enabled = false
+})
+
+
+
+Misc.Toggle({
+    Text = "Auto Collect Gifts",
+    Callback = function(v)
+        vv = v
+        while vv do task.wait()
+    local args = {
+        [1] = {
+            [1] = 1
+            }
+        }
+
+        workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+        local args = {
+            [1] = {
+                [1] = 2
+                }
+            }
+    
+            workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+            local args = {
+                [1] = {
+                    [1] = 3
+                    }
+                }
+        
+                workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                local args = {
+                    [1] = {
+                        [1] = 4
+                        }
+                    }
+            
+                    workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                    local args = {
+                        [1] = {
+                            [1] = 5
+                            }
+                        }
+                
+                        workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                        local args = {
+                            [1] = {
+                                [1] = 6
+                                }
+                            }
+                    
+                            workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                            local args = {
+                                [1] = {
+                                    [1] = 7
+                                    }
+                                }
+                        
+                                workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                                local args = {
+                                    [1] = {
+                                        [1] = 8
+                                        }
+                                    }
+                            
+                                    workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                                    local args = {
+                                        [1] = {
+                                            [1] = 9
+                                            }
+                                        }
+                                
+                                        workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                                        local args = {
+                                            [1] = {
+                                                [1] = 10
+                                                }
+                                            }
+                                    
+                                            workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                                            local args = {
+                                                [1] = {
+                                                    [1] = 11
+                                                    }
+                                                }
+                                        
+                                                workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+                                                local args = {
+                                                    [1] = {
+                                                        [1] = 12
+                                                        }
+                                                    }
+                                            
+                                                    workspace.__THINGS.__REMOTES:FindFirstChild("redeem free gift"):InvokeServer(unpack(args))
+
+
+
+    end
+    end,
+})
+
+
