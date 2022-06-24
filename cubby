@@ -146,8 +146,9 @@ Y.Button({
         elseif island == "Snow Island" then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-247, 2512, -474)
         elseif island == "Desert Island" then
-
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-209, 3340, -780)
         elseif island == "Death Island" then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-312, 4382, -484)
         end
     end,
 })
