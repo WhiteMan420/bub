@@ -122,8 +122,8 @@ Y.Toggle({
 Z.Toggle({
     Text = "Auto Claim Achievements",
     Callback = function(Value)
-        a = Value
-        while a do task.wait()
+        b = Value
+        while b do task.wait()
             local args = {
                 [1] = "hatchEgg"
             }
