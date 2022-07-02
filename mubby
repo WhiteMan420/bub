@@ -112,7 +112,6 @@ Y.Toggle({
                     }
                     
                     game:GetService("ReplicatedStorage").Remotes.BuyPickaxe:InvokeServer(unpack(args))
-                    wait(0.5)
                 end
             end
         end
