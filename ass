@@ -1,0 +1,184 @@
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
+
+local X = Material.Load({
+    Title = "Keybrew Hub | Anime Speed Simulator",
+    Style = 3,
+    SizeX = 300,
+    SizeY = 350,
+    Theme = "Light",
+    ColorOverrides = {
+        MainFrame = Color3.fromRGB(0,0,0),
+        Toggle = Color3.fromRGB(124,37,255),
+        ToggleAccent = Color3.fromRGB(255,255,255), 
+        Dropdown = Color3.fromRGB(124,37,255),
+		DropdownAccent = Color3.fromRGB(255,255,255),
+        Slider = Color3.fromRGB(124,37,255),
+		SliderAccent = Color3.fromRGB(255,255,255),
+        NavBarAccent = Color3.fromRGB(0,0,0),
+        Content = Color3.fromRGB(0,0,0),
+    }
+})
+
+local Y = X.New({
+    Title = "Main"
+})
+
+local C = X.New({
+    Title = "Collect"
+})
+
+local M = X.New({
+    Title = "Misc"
+})
+
+local Cred = X.New({
+    Title = "Credits"
+})
+    Cred.Button({
+    Text = "Copy Discord UyuSF4fPC9",
+    Callback = function()
+        setclipboard("https://discord.gg/UyuSF4fPC9")
+        toclipboard("https://discord.gg/UyuSF4fPC9")
+    end,
+})
+
+local Area = {}
+
+    for i, v in pairs(game:GetService("Workspace").Areas:GetChildren()) do
+        if v:IsA "Folder"  then
+            table.insert(Area, tostring(v))
+    end
+end
+
+local Dispenser = {}
+
+    for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+        if v.Parent.Name == "Dispensers"  then
+            table.insert(Dispenser, tostring(v))
+    end
+end
+
+Y.Toggle({
+    Text = "Auto Click",
+    Callback = function(Value)
+        c = Value
+        while c do task.wait()
+            game:GetService("ReplicatedStorage").Events.Training:FireServer()
+        end
+    end,
+    Enabled = false
+})
+Y.Toggle({
+    Text = "Auto Rebirth",
+    Callback = function(Value)
+        ccc = Value
+        while ccc do task.wait()
+            game:GetService("ReplicatedStorage").Events.Rebirth:FireServer()
+
+        end
+    end,
+    Enabled = false
+})
+
+Y.Dropdown({
+    Text = "Select Dispenser",
+    Callback = function(Value)
+        getgenv().dispenser = Value
+    end,
+    Options = Dispenser
+})
+
+Y.Toggle({
+    Text = "Auto Open",
+    Callback = function(Value)
+        cc = Value
+        while cc do task.wait()
+            
+            game:GetService("ReplicatedStorage").Events.Hatch:FireServer(dispenser)        
+        end
+    end,
+    Enabled = false
+})
+
+C.Dropdown({
+    Text = "Select Area",
+    Callback = function(Value)
+        getgenv().area = Value
+    end,
+    Options = Area
+})
+
+C.Toggle({
+    Text = "Collect All Orbs",
+    Callback = function(Value)
+        zz = Value
+        while zz do task.wait()
+            pcall(function()
+            for i, v in next, game:GetService("Workspace").Areas[area].Orbs:GetDescendants() do
+                if v:IsA("TouchTransmitter") then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1)
+                    end
+                end
+            end)
+        end
+    end,
+    Enabled = false
+})
+
+C.Toggle({
+    Text = "Collect All Character Orbs",
+    Callback = function(Value)
+        zzz = Value
+        while zzz do task.wait()
+            pcall(function()
+            for i, v in next, game:GetService("Workspace").Areas[area].CharacterOrbs:GetDescendants() do
+                if v:IsA("TouchTransmitter") then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1)
+                    end
+                end
+            end)
+        end
+    end,
+    Enabled = false
+})
+M.Button({
+    Text = "Destroy Ramps",
+    Callback = function()
+        for i, v in next, game:GetService("Workspace").Areas:GetDescendants() do
+            if v.Name == "Ramps" and v:IsA("Folder") then
+                v:Destroy()
+            end
+        end
+    end,
+})
+
+
+
+M.Slider(
+    {
+        Text = "WalkSpeed",
+        Callback = function(warthog)
+            getgenv().speed = warthog
+        end,
+        Min = 1,
+        Max = 500,
+        Def = 50
+    }
+)
+M.Toggle(
+    {
+        Text = "Toggle",
+        Callback = function(g)
+            gg = g
+            while gg do
+                task.wait()
+                game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = speed
+            end
+        end,
+        Enabled = false
+    }
+)
