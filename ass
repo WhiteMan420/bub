@@ -99,13 +99,32 @@ Y.Toggle({
     end,
     Enabled = false
 })
-
 C.Dropdown({
     Text = "Select Area",
     Callback = function(Value)
         getgenv().area = Value
     end,
     Options = Area
+})
+
+
+C.Toggle({
+    Text = "Collect All Hoops",
+    Callback = function(Value)
+        z = Value
+        while z do task.wait()
+            pcall(function()
+            for i, v in next, game:GetService("Workspace").Areas[area].Hoops:GetDescendants() do
+                if v:IsA("TouchTransmitter") then
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+                    wait()
+                    firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, v.Parent, 1)
+                    end
+                end
+            end)
+        end
+    end,
+    Enabled = false
 })
 
 C.Toggle({
@@ -145,17 +164,6 @@ C.Toggle({
     end,
     Enabled = false
 })
-M.Button({
-    Text = "Destroy Ramps",
-    Callback = function()
-        for i, v in next, game:GetService("Workspace").Areas:GetDescendants() do
-            if v.Name == "Ramps" and v:IsA("Folder") then
-                v:Destroy()
-            end
-        end
-    end,
-})
-
 
 
 M.Slider(
