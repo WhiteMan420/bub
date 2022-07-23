@@ -1,0 +1,99 @@
+local player = game.Players.LocalPlayer
+local char = player.Character
+local lp = game.Players.LocalPlayer
+
+
+local metatable = getrawmetatable(game)
+local nc = metatable.__namecall
+
+setreadonly(metatable, false)
+
+metatable.__namecall =
+    newcclosure(
+    function(self, ...)
+        local args = {...}
+        local name = self
+        if getnamecallmethod() == "FireServer" and tostring(name) == "moddelteasdasd123" then
+            return wait(9e9)
+        end
+        return nc(self, ...)
+    end
+)
+
+setreadonly(metatable, true)
+
+
+local Material = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kinlei/MaterialLua/master/Module.lua"))()
+
+local X =
+    Material.Load(
+    {
+        Title = "Keybrew Hub | Project Slayer",
+        Style = 3,
+        SizeX = 300,
+        SizeY = 350,
+        Theme = "Light",
+        ColorOverrides = {
+            MainFrame = Color3.fromRGB(0, 0, 0),
+            Toggle = Color3.fromRGB(124, 37, 255),
+            ToggleAccent = Color3.fromRGB(255, 255, 255),
+            Dropdown = Color3.fromRGB(124, 37, 255),
+            DropdownAccent = Color3.fromRGB(255, 255, 255),
+            Slider = Color3.fromRGB(124, 37, 255),
+            SliderAccent = Color3.fromRGB(255, 255, 255),
+            NavBarAccent = Color3.fromRGB(0, 0, 0),
+            Content = Color3.fromRGB(0, 0, 0)
+        }
+    }
+)
+
+local Y =
+    X.New(
+    {
+        Title = "Main"
+    }
+)
+
+
+
+local Cred =
+    X.New(
+    {
+        Title = "Credits"
+    }
+)
+Cred.Button(
+    {
+        Text = "Copy Discord",
+        Callback = function()
+            setclipboard("https://discord.gg/keybrew")
+            toclipboard("https://discord.gg/keybrew")
+        end
+    }
+)
+
+Y.Dropdown({
+    Text = "Select Slot",
+    Callback = function(Value)
+        getgenv().slot = Value
+    end,
+    Options = {
+        "Slot1",
+        "Slot2",
+        "Slot3",
+    },
+
+})
+
+Y.Button(
+    {
+        Text = "Reset Data",
+        Callback = function()
+            local args = {
+                [1] = slot
+            }
+            
+            game:GetService("ReplicatedStorage").fix_slot:InvokeServer(unpack(args))
+        end
+    }
+)
