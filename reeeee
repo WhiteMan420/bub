@@ -72,28 +72,20 @@ Cred.Button(
     }
 )
 
-Y.Dropdown({
-    Text = "Select Slot",
-    Callback = function(Value)
-        getgenv().slot = Value
-    end,
-    Options = {
-        "Slot1",
-        "Slot2",
-        "Slot3",
-    },
-
-})
 
 Y.Button(
     {
-        Text = "Reset Data",
+        Text = "Thank you.",
         Callback = function()
-            local args = {
-                [1] = slot
-            }
-            
-            game:GetService("ReplicatedStorage").fix_slot:InvokeServer(unpack(args))
+game.StarterGui:SetCore(
+    "SendNotification",
+    {
+        Title = "Thank you for supporting Keybrew",
+        Text = "Make sure execute in Main Game (not tutorial)",
+        Icon = "",
+        Duration = 30
+    }
+)
         end
     }
 )
