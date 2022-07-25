@@ -111,17 +111,16 @@ local mainautofarmsec = maintab:NewSection("Auto-Farm")
 
 
 local function DemonProgressRefresh()
-    demonprogress:SetText("Demon Progress: "..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].DemonProgress[1].Value.."/"..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].DemonProgress[2].Value)
+    demonprogress:UpdateSection("Demon Progress: "..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].DemonProgress[1].Value.."/"..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].DemonProgress[2].Value)
 end
 
 game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].DemonProgress[1].Changed:Connect(DemonProgressRefresh)
 
 local function BreathingProgressRefresh()
-    breathingprogress:SetText("Breathing Progress: "..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].BreathingProgress[1].Value.."/"..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].BreathingProgress[2].Value)
+    breathingprogress:UpdateSection("Breathing Progress: "..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].BreathingProgress[1].Value.."/"..game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].BreathingProgress[2].Value)
 end
 
 game:GetService("ReplicatedStorage")["Player_Data"][game.Players.LocalPlayer.Name].BreathingProgress[1].Changed:Connect(BreathingProgressRefresh)
-
 
 mainautofarmsec:NewDropdown("Select Weapon", "Select a Weapon to Auto-Farm.", {"fist_combat",
 "Sword_Combat_Slash"}, function(o)
