@@ -455,25 +455,45 @@ end)
 
 teleportbosssec:NewButton("Teleport", "Teleports you to the selected Boss.", function()
     if area == "Zuko" then
-        moveto(CFrame.new(209.372, 292.624, -1860.0) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+       game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(209.372, 292.624, -1860.0)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Sabito" then
-        moveto(CFrame.new(1121.19, 291.22, -2890.5) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1121.19, 291.22, -2890.5)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Zenitsu" then
-        moveto(CFrame.new(-398, 435, -2188) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-398, 435, -2188)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Kaden" then
-        moveto(CFrame.new(-477.035, 308.986, -2918.89) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-477.035, 308.986, -2918.89) 
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Sanemi" then
-        moveto(CFrame.new(1547.73, 348.462, -3778.08) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1547.73, 348.462, -3778.08)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Nezuko" then
-        moveto(CFrame.new(3530.02, 349.031, -4450.54) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3530.02, 349.031, -4450.54)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Giyu" then
-        moveto(CFrame.new(2935, 352, -2931) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2935, 352, -2931)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Shiron" then
-        moveto(CFrame.new(3283.97, 448.609, -3941.2) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(3283.97, 448.609, -3941.2)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Slasher" then
-        moveto(CFrame.new(4290, 365, -4367) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4290, 365, -4367)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
     elseif area == "Yahaba/Susamaru" then
-        moveto(CFrame.new(1403, 500, -4459) + Vector3.new(0, 0, 0), tonumber(125))
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = true
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1403, 500, -4459)
+        game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Anchored = false
         end
     end)
 
@@ -827,7 +847,7 @@ miscplayersec:NewToggle("Toggle JumpPower", "Toggles your JumpPower.", function(
     jj = state
     while jj do
         task.wait()
-        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = jump
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = jump
     end
 end)
 
