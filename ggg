@@ -1,7 +1,7 @@
 
 
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local win = lib.CreateLib("Keybrew Hub discord.gg/keybrew", "GrapeTheme")
+local win = lib.CreateLib("Keybrew Hub [VIP] discord.gg/keybrew", "GrapeTheme")
 
 local maint = win:NewTab("READ EVERYTHING")
 maint:NewSection("Do not manually attack while using Kill Aura")
@@ -120,7 +120,7 @@ end
 
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
-local window = library.CreateLib("Keybrew Hub discord.gg/keybrew", "GrapeTheme")
+local window = library.CreateLib("Keybrew Hub [VIP] discord.gg/keybrew", "GrapeTheme")
 
 -- Main
 
