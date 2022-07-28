@@ -92,7 +92,9 @@ end)
 Main:NewToggle("Teleport to NPC", "Teleports to NPC", function(state)
     aa = state
     while aa do task.wait()
+        pcall(function()
         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getNPC().HumanoidRootPart.CFrame 
+    end)
     end
 end)
 
