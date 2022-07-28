@@ -1,0 +1,143 @@
+
+
+local world1 = "Demon Village"
+
+local Locale = {}
+
+for i, v in pairs(workspace.Enemies:GetChildren()) do
+    if v:IsA "Folder"  then
+        table.insert(Locale, tostring(v))
+end
+end
+local Worlds = {}
+
+for i, v in pairs(game:GetService("Workspace").Worlds:GetChildren()) do
+    if v:IsA "Folder"  then
+        table.insert(Worlds, tostring(v))
+end
+end
+
+local Egg = {}
+
+for i, v in pairs(game:GetService("Workspace").Eggs:GetChildren()) do
+    if v:IsA "Model"  then
+        table.insert(Egg, tostring(v))
+end
+end
+
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+local window = library.CreateLib("Keybrew Hub discord.gg/keybrew", "GrapeTheme")
+
+-- Main
+
+local maintab = window:NewTab("Main")
+local Main = maintab:NewSection("Farm")
+
+local NPCs = {}
+
+Main:NewDropdown("Select World", "Select a World to autofarm", Locale, function(o)
+    getgenv().world = o
+end)
+
+for i, v in pairs(workspace.Enemies[world1]:GetChildren()) do
+    if v:IsA "Model"  then
+        if not table.find(NPCs, tostring(v)) then
+        table.insert(NPCs, tostring(v))
+        end
+    end
+end
+
+local k = Main:NewDropdown("Select NPC", "Select a NPC to autofarm", NPCs, function(o)
+    getgenv().npc = o
+    
+end)
+
+local function getNPC()
+    local dist, thing = math.huge
+    for i, v in next, workspace.Enemies[world]:GetChildren() do
+        if v:IsA("Model") and v.Name == npc and v.HP.Value > 0 then
+            local mag =
+                (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).magnitude
+            if mag < dist then
+                dist = mag
+                thing = v
+            end
+        end
+    end
+    return thing
+end
+
+Main:NewToggle("Autofarm NPC", "Autofarms NPC", function(state)
+    a = state
+    while a do task.wait()
+        local args = {
+            [1] = getNPC()
+        }
+
+        game:GetService("ReplicatedStorage").Remotes.WeaponRemote:FireServer(unpack(args))
+    end
+end)
+Main:NewButton("Refresh NPCs", "Refreshes NPC Dropdown.", function()
+    table.clear(NPCs)
+    for i, v in pairs(workspace.Enemies[world]:GetChildren()) do
+        if v:IsA "Model"  then
+            if not table.find(NPCs, tostring(v)) then
+            table.insert(NPCs, tostring(v))
+            k:Refresh(NPCs)
+            end
+        end
+    end
+end)
+
+Main:NewToggle("Teleport to NPC", "Teleports to NPC", function(state)
+    aa = state
+    while aa do task.wait()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getNPC().HumanoidRootPart.CFrame 
+    end
+end)
+
+
+local eggtab = window:NewTab("Eggs")
+local eggs = eggtab:NewSection("Eggs")
+    eggs:NewDropdown("Select Egg", "Select a Egg to autofarm", Egg, function(o)
+    getgenv().egg = o
+    
+end)
+
+eggs:NewToggle("Auto open Egg", "Auto open Egg", function(state)
+    aaa = state
+    while aaa do task.wait()
+        local args = {
+            [1] = egg,
+            [2] = false,
+            [3] = false
+        }
+
+        game:GetService("ReplicatedStorage").Remotes.OpenEgg:InvokeServer(unpack(args))
+    end
+end)
+local tptab = window:NewTab("Teleports")
+local tp = tptab:NewSection("Teleports")
+tp:NewDropdown("Select World", "Select a World to Tp", Worlds, function(o)
+    getgenv().tps = o
+    
+end)
+tp:NewButton("Teleport to World", "Teleport to Selected World", function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService("Workspace").Worlds[tps].Spawn.CFrame
+end)
+-- Settings
+
+local settingstab = window:NewTab("Settings")
+local settingsuisec = settingstab:NewSection("UI Settings")
+settingsuisec:NewKeybind("Toggle UI Keybind", "Toggles the UI with the use of a key.", Enum.KeyCode.RightControl, function()
+	library:ToggleUI()
+end)
+
+--anti afk
+
+local vu = game:GetService("VirtualUser")
+game:GetService("Players").LocalPlayer.Idled:connect(function()
+   vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+   wait(1)
+   vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+end)
