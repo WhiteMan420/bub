@@ -79,6 +79,22 @@ Main:NewToggle("Autofarm NPC", "Autofarms NPC", function(state)
     end)
     end
 end)
+local function getCOMET()
+    local dist, thing = math.huge
+    for i, v in next,  workspace.Comets:GetDescendants() do
+        if v.Name == "Comet" then
+            local mag =
+                (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v["Meshes/Meteor_Icosphere (1)"].Position).magnitude
+            if mag < dist then
+                dist = mag
+                thing = v
+            end
+        end
+    end
+    return thing
+end
+
+
 Main:NewButton("Refresh NPCs", "Refreshes NPC Dropdown.", function()
     table.clear(NPCs)
     for i, v in pairs(workspace.Enemies[world]:GetChildren()) do
@@ -99,8 +115,26 @@ Main:NewToggle("Teleport to NPC", "Teleports to NPC", function(state)
     end)
     end
 end)
+Main:NewToggle("Autofarm Comet", "Autofarms Comet", function(state)
+    aaaaa = state
+    while aaaaa do task.wait()
+        pcall(function()
+        local args = {
+            [1] = getCOMET()
+        }
 
-
+        game:GetService("ReplicatedStorage").Remotes.WeaponRemote:FireServer(unpack(args))
+    end)
+    end
+end)
+Main:NewToggle("Teleport to Comet", "Teleports to Comet", function(state)
+    b = state
+    while b do task.wait()
+        pcall(function()
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getCOMET()["Meshes/Meteor_Icosphere (1)"].CFrame 
+    end)
+    end
+end)
 local eggtab = window:NewTab("Eggs")
 local eggs = eggtab:NewSection("Eggs")
     eggs:NewDropdown("Select Egg", "Select a Egg to autofarm", Egg, function(o)
