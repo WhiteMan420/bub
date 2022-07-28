@@ -55,7 +55,7 @@ end)
 local function getNPC()
     local dist, thing = math.huge
     for i, v in next, workspace.Enemies[world]:GetChildren() do
-        if v:IsA("Model") and v.Name == npc and v.HP.Value > 0 then
+        if v:IsA("Model") and v.Name == npc then
             local mag =
                 (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.HumanoidRootPart.Position).magnitude
             if mag < dist then
