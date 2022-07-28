@@ -70,11 +70,13 @@ end
 Main:NewToggle("Autofarm NPC", "Autofarms NPC", function(state)
     a = state
     while a do task.wait()
+        pcall(function()
         local args = {
             [1] = getNPC()
         }
 
         game:GetService("ReplicatedStorage").Remotes.WeaponRemote:FireServer(unpack(args))
+    end)
     end
 end)
 Main:NewButton("Refresh NPCs", "Refreshes NPC Dropdown.", function()
